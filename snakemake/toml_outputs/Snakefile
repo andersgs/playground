@@ -1,0 +1,44 @@
+'''
+A snakemake file that passes toml files from one rule to the
+other. All the information should be enconded in the TOML file, so
+that at the end, it has all the information about what happened,
+as well as stats for all the steps.
+'''
+
+import toml
+from snakemake.utils import min_version
+
+min_version("5.4")
+
+samples = ['a', 'b']
+
+rule all:
+    input: expand('{sample}/final.toml', sample=samples)
+
+rule one:
+    input: '{sample}/{sample}.fq'
+    output: temp('{sample}/one.toml')
+    run:
+        d = {'raw_data': {'id': wildcards.sample,
+                          'reads': [str(r) for r in input]}}
+        with open(output[0], 'w') as f:
+            toml.dump(d, f)
+
+rule two:
+    input: '{sample}/one.toml'
+    output: temp('{sample}/two.toml')
+    run:
+        d = toml.load(input[0])
+        d['asm'] = {'spades': {'N50': 50}}
+        with open(output[0], 'w') as f:
+            toml.dump(d, f)
+
+rule three:
+    input: '{sample}/two.toml'
+    output: '{sample}/final.toml'
+    run:
+        d = toml.load(input[0])
+        d['species'] = {'kraken': {'db': '2019-01-01',
+                                   'top_hit': 'Salmonella', 'unclassified_reads': 0.3}}
+        with open(output[0], 'w') as f:
+            toml.dump(d, f)
