@@ -196,9 +196,38 @@ contigs = "ERR1305793/shovill.fasta"
 
 [ERR1305793.abricate]
 assembler = "shovill"
-db = "ncbi"
+db = "resfinder"
 contigs = "ERR1305793/shovill.fasta"
-results = ""
+[[ERR1305793.abricate.results]]
+"#FILE" = "ERR1305793/shovill.fasta"
+SEQUENCE = "contig00001"
+START = 255404
+END = 255841
+GENE = "aac(6')-Iaa_1"
+COVERAGE = "1-438/438"
+COVERAGE_MAP = "==============="
+GAPS = "0/0"
+"%COVERAGE" = 100.0
+"%IDENTITY" = 100.0
+DATABASE = "resfinder"
+ACCESSION = "NC_003197"
+PRODUCT = "aac(6')-Iaa_1"
+
+[[ERR1305793.abricate.results]]
+"#FILE" = "ERR1305793/shovill.fasta"
+SEQUENCE = "contig00015"
+START = 31686
+END = 32904
+GENE = "mdf(A)_1"
+COVERAGE = "1-1219/1233"
+COVERAGE_MAP = "==============="
+GAPS = "0/0"
+"%COVERAGE" = 98.86
+"%IDENTITY" = 79.33
+DATABASE = "resfinder"
+ACCESSION = "Y08743"
+PRODUCT = "mdf(A)_1"
+
 
 [ERR1305793.files.raw."ERR1305793/R1.fq.gz"]
 filename = "ERR1305793/R1.fq.gz"
