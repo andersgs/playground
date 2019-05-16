@@ -2,14 +2,18 @@
 
 ## Running
 
-Clone the repository:
+Clone the appriate portion of the repository:
 
-`git clone https:...`
+```console
+git clone --depth 1 --no-checkout --filter=blob:none https://github.com/andersgs/playground.git proto_qc
+cd proto_qc
+git checkout master -- snakemake/qc_pipeline && cd snakemake/qc_pipeline
+```
 
 ### Unix
 
 Run `bash startup.sh`. This will download the singularity images, and a test dataset. Then, run `snakemake --use-singularity`. 
-Assumes `snakemake` is installed an available.
+Assumes `snakemake` is installed and available.
 
 ### Mac
 
@@ -27,7 +31,7 @@ Then, run:
 
 Then, run:
 
-`cd qc_folder && snakemake`
+`cd qc_folder && snakemake --use-singularity`
 
 ## Elements
 
@@ -44,7 +48,7 @@ Then, run:
    3. `skesa`
 5. Serotyping/Sequence Typing
    1. `mlst`
-   2. Appropriate serotyping tool for the species
+   2. Appropriate serotyping tool for the species (**not implemented**)
 6. AMR detection
    1. `abricate`
 
@@ -146,3 +150,141 @@ Accepts as parameters:
 
 A rule that will eventually act to gather all the `toml` files from individual steps
 into a single `toml` for a sample.
+
+## Example `toml` output
+
+```toml
+[ERR1305793.kraken]
+unclassified = 2.23
+[[ERR1305793.kraken.classified]]
+percentage = 93.5
+taxon = "Salmonella"
+
+[ERR1305793.kraken.classified.species]
+percentage = "91.3"
+taxon = "Salmonella enterica"
+[[ERR1305793.kraken.classified]]
+percentage = 0.12
+taxon = "Enterococcus"
+
+[ERR1305793.kraken.classified.species]
+percentage = "0.11"
+taxon = "Enterococcus faecium"
+[[ERR1305793.kraken.classified]]
+percentage = 0.01
+taxon = "Citrobacter"
+
+[ERR1305793.kraken.classified.species]
+percentage = "0.0"
+taxon = "Citrobacter freundii"
+
+[ERR1305793.mash]
+genome_size = 4970990.0
+coverage_estimate = 40.43
+from_reads = "trimmed"
+
+[ERR1305793.shovill]
+file_type = "trimmed"
+contigs = "ERR1305793/shovill.fasta"
+
+[ERR1305793.mlst]
+scheme = "senterica"
+st = "19"
+alleles = [ "aroC(10)", "dnaN(7)", "hemD(12)", "hisD(9)", "purE(5)", "sucA(9)", "thrA(2)",]
+assembler = "shovill"
+contigs = "ERR1305793/shovill.fasta"
+
+[ERR1305793.abricate]
+assembler = "shovill"
+db = "ncbi"
+contigs = "ERR1305793/shovill.fasta"
+results = ""
+
+[ERR1305793.files.raw."ERR1305793/R1.fq.gz"]
+filename = "ERR1305793/R1.fq.gz"
+
+[ERR1305793.files.raw."ERR1305793/R2.fq.gz"]
+filename = "ERR1305793/R2.fq.gz"
+
+[ERR1305793.files.trimmed."ERR1305793/R1_trim.fq.gz"]
+filename = "ERR1305793/R1_trim.fq.gz"
+
+[ERR1305793.files.trimmed."ERR1305793/R2_trim.fq.gz"]
+filename = "ERR1305793/R2_trim.fq.gz"
+
+[ERR1305793.files.raw."ERR1305793/R1.fq.gz".summary]
+min_len = 35.0
+max_len = 301.0
+avg_len = 199.37
+distinct_error_codes = 33
+bases = 193104534.0
+A = 23.8
+C = 26.2
+G = 26.3
+T = 23.6
+N = 0.1
+avgQ = 36.2
+errQ = 25.6
+low = 2.6
+high = 97.40000000000001
+total_reads = 968585.0
+geecee = 52.5
+med_len = 202.0
+
+[ERR1305793.files.raw."ERR1305793/R2.fq.gz".summary]
+min_len = 35.0
+max_len = 301.0
+avg_len = 205.92
+distinct_error_codes = 33
+bases = 199455461.0
+A = 24.3
+C = 28.4
+G = 24.9
+T = 22.4
+N = 0.1
+avgQ = 29.7
+errQ = 16.2
+low = 22.3
+high = 77.7
+total_reads = 968585.0
+geecee = 53.3
+med_len = 212.0
+
+[ERR1305793.files.trimmed."ERR1305793/R1_trim.fq.gz".summary]
+min_len = 36.0
+max_len = 301.0
+avg_len = 181.18
+distinct_error_codes = 33
+bases = 143079111.0
+A = 23.9
+C = 26.1
+G = 26.2
+T = 23.8
+N = 0.0
+avgQ = 37.2
+errQ = 33.0
+low = 0.4
+high = 99.59999999999999
+total_reads = 789690.0
+geecee = 52.3
+med_len = 173.0
+
+[ERR1305793.files.trimmed."ERR1305793/R2_trim.fq.gz".summary]
+min_len = 36.0
+max_len = 301.0
+avg_len = 137.87
+distinct_error_codes = 33
+bases = 108877495.0
+A = 24.0
+C = 26.1
+G = 25.9
+T = 24.0
+N = 0.0
+avgQ = 36.3
+errQ = 28.5
+low = 1.3
+high = 98.7
+total_reads = 789690.0
+geecee = 52.0
+med_len = 139.0
+```
