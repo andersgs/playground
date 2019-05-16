@@ -42,7 +42,7 @@ def parse_abricate_results(sample, assembler, contigs, db):
         abricate = {'assembler': assembler,
                     'db': db,
                     'contigs': contigs,
-                    'results': ""}q
+                    'results': ""}
         return abricate
     abricate = abricate.to_dict(orient='records')
     abricate = {'assembler': assembler,
