@@ -51,6 +51,8 @@ Then, run:
    2. Appropriate serotyping tool for the species (**not implemented**)
 6. AMR detection
    1. `abricate`
+7. Genome annotation
+   1. `prokka` (**not implemented**)
 
 
 ## Structure
